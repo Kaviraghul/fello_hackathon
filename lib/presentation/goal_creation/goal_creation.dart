@@ -1,6 +1,7 @@
 import 'package:fello_hackathon/data/models/plan_goal_details_model.dart';
 import 'package:fello_hackathon/presentation/components/sliders/sliders.dart';
 import 'package:fello_hackathon/presentation/goal_creation/goal_creation_view_model.dart';
+import 'package:fello_hackathon/presentation/resources/colors_manager.dart';
 import 'package:fello_hackathon/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -108,6 +109,21 @@ class _GoalCreationScreenState extends State<GoalCreationScreen> {
                 },
               ),
             ],
+          ),
+        ),
+        bottomNavigationBar: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: ColorManager.black,
+            minimumSize: Size(88, 36),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(2)),
+            ),
+          ),
+          onPressed: () {},
+          child: Text(
+            'Calculate',
+            style: TextStyle(color: Colors.white),
           ),
         ),
       ),
