@@ -11,10 +11,10 @@ String dummyBrandsData = '''
     "planGoalDetails": {
       "minAmount": 500,
       "maxAmount": 5000,
-      "amountDivisions": 10,
+      "amountDivisions": 9,
       "minTenure": 3,
       "maxTenure": 12,
-      "tenureDivisions": 9
+      "tenureDivisions": 8
     }
   }
   

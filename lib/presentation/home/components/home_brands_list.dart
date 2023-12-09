@@ -33,6 +33,7 @@ class _HomeBrandsListState extends State<HomeBrandsList> {
             brandSubtitle: widget.brandsList[index].brandSubtitle,
             discountStatement: widget.brandsList[index].discountStatement,
             dicountPercentage: widget.brandsList[index].discountPercentage,
+            planGoalDetails: widget.brandsList[index].planGoalDetails,
           );
         },
       ),

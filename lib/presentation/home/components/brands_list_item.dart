@@ -1,3 +1,4 @@
+import 'package:fello_hackathon/data/models/plan_goal_details_model.dart';
 import 'package:fello_hackathon/presentation/goal_creation/goal_creation.dart';
 import 'package:fello_hackathon/presentation/resources/colors_manager.dart';
 import 'package:fello_hackathon/presentation/resources/values_manager.dart';
@@ -9,12 +10,14 @@ class HomeBrandListItem extends StatelessWidget {
   final String brandSubtitle;
   final String discountStatement;
   final double dicountPercentage;
+  final PlanGoalDetails planGoalDetails;
   const HomeBrandListItem({
     required this.logoUrl,
     required this.brandName,
     required this.brandSubtitle,
     required this.discountStatement,
     required this.dicountPercentage,
+    required this.planGoalDetails,
     super.key,
   });
 
@@ -24,7 +27,9 @@ class HomeBrandListItem extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => GoalCreationScreen(),
+          builder: (context) => GoalCreationScreen(
+            planGoalDetails: planGoalDetails,
+          ),
           settings: RouteSettings(),
         ),
       ),

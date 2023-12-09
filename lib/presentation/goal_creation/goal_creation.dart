@@ -1,15 +1,31 @@
+import 'package:fello_hackathon/data/models/plan_goal_details_model.dart';
+import 'package:fello_hackathon/presentation/components/sliders/sliders.dart';
+import 'package:fello_hackathon/presentation/goal_creation/goal_creation_view_model.dart';
 import 'package:fello_hackathon/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class GoalCreationScreen extends StatefulWidget {
-  const GoalCreationScreen({super.key});
+  final PlanGoalDetails planGoalDetails;
+  const GoalCreationScreen({
+    required this.planGoalDetails,
+    super.key,
+  });
 
   @override
   State<GoalCreationScreen> createState() => _GoalCreationScreenState();
 }
 
 class _GoalCreationScreenState extends State<GoalCreationScreen> {
+  late GoalCreationViewModel goalCreationViewModel =
+      GoalCreationViewModel(planGoalDetails: widget.planGoalDetails);
+
+  @override
+  void initState() {
+    goalCreationViewModel.viewModelInitiate();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<ChartData> chartData = [
@@ -25,8 +41,7 @@ class _GoalCreationScreenState extends State<GoalCreationScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Container(
-                color: Colors.yellow,
+              SizedBox(
                 height: AppSize.s300,
                 child: SfCartesianChart(
                   series: <ChartSeries>[
@@ -43,13 +58,55 @@ class _GoalCreationScreenState extends State<GoalCreationScreen> {
               const SizedBox(
                 height: 30,
               ),
-              const Text("Select your amount"),
-              const SliderExample(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Select your amount"),
+                  StreamBuilder(
+                    stream: goalCreationViewModel.outputAmount,
+                    builder: ((context, snapshot) {
+                      return Text(
+                        snapshot.data.toString(),
+                      );
+                    }),
+                  )
+                ],
+              ),
+              AppSliders(
+                minValue: widget.planGoalDetails.minAmount.toDouble(),
+                maxValue: widget.planGoalDetails.maxAmount.toDouble(),
+                currentValue: widget.planGoalDetails.minAmount.toDouble(),
+                divisionsValue: widget.planGoalDetails.amountDivisions,
+                onDrag: (double newValue) {
+                  goalCreationViewModel.inputAmount.add(newValue);
+                },
+              ),
               const SizedBox(
                 height: 30,
               ),
-              const Text("Select your tenure"),
-              const SliderExample(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Select your Tenure"),
+                  StreamBuilder(
+                    stream: goalCreationViewModel.outputTenure,
+                    builder: ((context, snapshot) {
+                      return Text(
+                        snapshot.data.toString(),
+                      );
+                    }),
+                  )
+                ],
+              ),
+              AppSliders(
+                minValue: widget.planGoalDetails.minTenure.toDouble(),
+                maxValue: widget.planGoalDetails.maxTenure.toDouble(),
+                currentValue: widget.planGoalDetails.minTenure.toDouble(),
+                divisionsValue: widget.planGoalDetails.tenureDivisions,
+                onDrag: (double newValue) {
+                  goalCreationViewModel.inputTenure.add(newValue);
+                },
+              ),
             ],
           ),
         ),
@@ -63,33 +120,4 @@ class ChartData {
   final int y;
 
   ChartData(this.x, this.y);
-}
-
-class SliderExample extends StatefulWidget {
-  const SliderExample({super.key});
-
-  @override
-  State<SliderExample> createState() => _SliderExampleState();
-}
-
-class _SliderExampleState extends State<SliderExample> {
-  double _currentSliderValue = 20;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100,
-      child: Slider(
-        value: _currentSliderValue,
-        max: 100,
-        divisions: 5,
-        label: _currentSliderValue.round().toString(),
-        onChanged: (double value) {
-          setState(() {
-            _currentSliderValue = value;
-          });
-        },
-      ),
-    );
-  }
 }

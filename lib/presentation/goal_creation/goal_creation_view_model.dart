@@ -1,11 +1,20 @@
 import 'dart:async';
 
 import 'package:fello_hackathon/app/base_view_model.dart';
+import 'package:fello_hackathon/data/models/plan_goal_details_model.dart';
 
 class GoalCreationViewModel extends BaseViewModel
     with GoalCreationViewModelInput, GoalCreationViewModelOutput {
-  StreamController amountStreamController = StreamController<int>.broadcast();
-  StreamController tenureStreamController = StreamController<int>.broadcast();
+  final PlanGoalDetails planGoalDetails;
+  GoalCreationViewModel({required this.planGoalDetails});
+
+  late double currentAmountValue;
+  late double currentTenureValue;
+
+  StreamController amountStreamController =
+      StreamController<double>.broadcast();
+  StreamController tenureStreamController =
+      StreamController<double>.broadcast();
 
   @override
   void viewModelDispose() {
@@ -14,7 +23,11 @@ class GoalCreationViewModel extends BaseViewModel
   }
 
   @override
-  void viewModelInitiate() {}
+  void viewModelInitiate() {
+    currentAmountValue = planGoalDetails.minAmount.toDouble();
+    amountStreamController.add(planGoalDetails.minAmount.toDouble());
+    currentTenureValue = planGoalDetails.minTenure.toDouble();
+  }
 
   @override
   Sink get inputAmount => amountStreamController.sink;
@@ -23,19 +36,19 @@ class GoalCreationViewModel extends BaseViewModel
   Sink get inputTenure => tenureStreamController.sink;
 
   @override
-  Stream<int> get outputAmount =>
+  Stream<double> get outputAmount =>
       amountStreamController.stream.map((amount) => _onAmountChange(amount));
 
   @override
-  Stream<int> get outputTenure =>
+  Stream<double> get outputTenure =>
       tenureStreamController.stream.map((tenure) => _onTenureChange(tenure));
 
-  int _onAmountChange(int amount) {
-    return 20;
+  double _onAmountChange(double amount) {
+    return amount;
   }
 
-  int _onTenureChange(int tenure) {
-    return 20;
+  double _onTenureChange(double tenure) {
+    return tenure;
   }
 }
 
@@ -45,6 +58,6 @@ mixin GoalCreationViewModelInput {
 }
 
 mixin GoalCreationViewModelOutput {
-  Stream<int> get outputAmount;
-  Stream<int> get outputTenure;
+  Stream<double> get outputAmount;
+  Stream<double> get outputTenure;
 }
